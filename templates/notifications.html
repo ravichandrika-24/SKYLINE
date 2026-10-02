@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SKYLINE Notifications</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .count {
+            color: #8b8fff;
+            margin-bottom: 25px;
+        }
+
+        .notification {
+            background: #151b32;
+            border: 1px solid #293252;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+        }
+
+        .notification h3 {
+            margin: 0 0 8px;
+        }
+
+        .notification p {
+            color: #b8bfd8;
+        }
+
+        .type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #635bff;
+            font-size: 12px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a class="back" href="/">← Back to Dashboard</a>
+
+    <h1>🔔 Notifications</h1>
+
+    <div class="count">
+        {{ unread_count }} unread notifications
+    </div>
+
+    {% if notifications %}
+
+        {% for notification in notifications %}
+
+            <div class="notification">
+
+                <span class="type">
+                    {{ notification.notification_type }}
+                </span>
+
+                <h3>
+                    {{ notification.title }}
+                </h3>
+
+                <p>
+                    {{ notification.message }}
+                </p>
+
+                <small>
+                    {{ notification.created_at }}
+                </small>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="notification">
+            <h3>No notifications yet</h3>
+            <p>Your SKYLINE notifications will appear here.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
