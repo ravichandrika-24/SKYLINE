@@ -3,6 +3,7 @@ from django.urls import path, include
 from config.health import health_check
 
 urlpatterns = [
+    path('analytics/', analytics_page, name='analytics-page'),
     path("", health_check, name="home"),
     path("health/", health_check, name="health"),
 
