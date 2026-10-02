@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}SKYLINE{% endblock %}</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b1020;
+            color: white;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+
+            background: #11172b;
+            border-bottom: 1px solid #293252;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: #635bff;
+            text-decoration: none;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: #b9c0d8;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .logout {
+            background: #635bff;
+            color: white !important;
+            padding: 9px 15px;
+            border-radius: 8px;
+        }
+
+        .logout:hover {
+            background: #5148e8;
+        }
+
+        /* MAIN */
+
+        .main {
+            min-height: calc(100vh - 70px);
+        }
+
+        /* FOOTER */
+
+        .footer {
+            margin-top: 60px;
+            padding: 25px;
+            text-align: center;
+            color: #737d9d;
+            border-top: 1px solid #202943;
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                height: auto;
+                min-height: 70px;
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .logout {
+                padding: 7px 11px;
+            }
+        }
+
+    </style>
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+
+    <nav class="navbar">
+
+        <a href="/" class="logo">
+            SKYLINE<span>.</span>
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/">Dashboard</a>
+
+            <a href="/projects/">
+                Projects
+            </a>
+
+            <a href="/tasks/">
+                Tasks
+            </a>
+
+            <a href="/analytics/">
+                Analytics
+            </a>
+
+            <a href="/api/support/">
+                AI Support
+            </a>
+
+            <a href="/notifications/">
+                Notifications
+            </a>
+
+            <a href="/admin-control/">
+                Admin
+            </a>
+
+            <a href="#" class="logout" onclick="logoutUser(); return false;">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- PAGE CONTENT -->
+
+    <main class="main">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        SKYLINE AI Business Operations Platform
+
+        <br>
+
+        <span>
+            Built with Python + Django + AI
+        </span>
+
+    </footer>
+
+
+    <!-- LOGOUT -->
+
+    <script>
+
+        function logoutUser() {
+
+            localStorage.removeItem("access");
+
+            localStorage.removeItem("refresh");
+
+            window.location.href = "/api/auth/login/";
+
+        }
+
+    </script>
+
+</body>
+</html>
