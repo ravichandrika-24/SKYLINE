@@ -1,9 +1,9 @@
-﻿services:
+services:
   - type: web
     name: skyline
     runtime: python
     buildCommand: pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
-    startCommand: gunicorn config.wsgi:application
+    startCommand: python manage.py migrate --noinput && gunicorn config.wsgi:application
     envVars:
       - key: SECRET_KEY
         generateValue: true
