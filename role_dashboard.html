@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SKYLINE - Role Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: white;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 50px 20px;
+        }
+
+        .header {
+            background: #151c32;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .role {
+            color: #8b9cff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #151c32;
+            padding: 25px;
+            border-radius: 18px;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .card p {
+            color: #9ca3af;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 16px;
+            background: #635bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .logout {
+            background: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>🚀 SKYLINE</h1>
+
+        <p>
+            Welcome,
+            <strong>{{ user.username }}</strong>
+        </p>
+
+        <p class="role">
+            Role: {{ page }}
+        </p>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/api/auth/login/" class="logout">
+            Login
+        </a>
+
+    </div>
+
+
+    <div class="grid">
+
+        {% if role == "ADMIN" %}
+
+        <div class="card">
+            <h2>👑 Admin</h2>
+            <p>
+                Manage users, projects, tasks,
+                support and system administration.
+            </p>
+            <a href="/admin/">
+                Admin Panel
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>📊 Analytics</h2>
+            <p>
+                View complete business analytics.
+            </p>
+            <a href="/analytics/">
+                Open Analytics
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>🎫 Support</h2>
+            <p>
+                Manage customer support tickets.
+            </p>
+            <a href="/api/support/management/">
+                Manage Support
+            </a>
+        </div>
+
+        {% elif role == "MANAGER" %}
+
+        <div class="card">
+            <h2>📁 Projects</h2>
+            <p>
+                Create and monitor projects.
+            </p>
+            <a href="/projects/">
+                Projects
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>✅ Tasks</h2>
+            <p>
+                Manage team tasks.
+            </p>
+            <a href="/tasks/">
+                Tasks
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>📊 Analytics</h2>
+            <p>
+                Monitor business performance.
+            </p>
+            <a href="/analytics/">
+                Analytics
+            </a>
+        </div>
+
+        {% elif role == "EMPLOYEE" %}
+
+        <div class="card">
+            <h2>✅ My Tasks</h2>
+            <p>
+                View and manage your work.
+            </p>
+            <a href="/tasks/">
+                My Tasks
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>📁 Projects</h2>
+            <p>
+                View active projects.
+            </p>
+            <a href="/projects/">
+                Projects
+            </a>
+        </div>
+
+        {% else %}
+
+        <div class="card">
+            <h2>🎫 Support</h2>
+            <p>
+                Create and check support requests.
+            </p>
+            <a href="/api/support/">
+                Contact Support
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>📋 My Requests</h2>
+            <p>
+                Track your support requests.
+            </p>
+            <a href="/api/support/management/">
+                View Requests
+            </a>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

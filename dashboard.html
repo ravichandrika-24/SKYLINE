@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}SKYLINE | Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+.dashboard {
+    padding: 45px;
+    max-width: 1250px;
+    margin: auto;
+}
+
+.hero {
+    background: linear-gradient(135deg, #151b32, #10162b);
+    border: 1px solid #293252;
+    border-radius: 24px;
+    padding: 40px;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin: 0 0 10px;
+}
+
+.hero p {
+    color: #aeb6d0;
+    font-size: 16px;
+}
+
+.badge {
+    display: inline-block;
+    background: #635bff;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 18px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: #151b32;
+    border: 1px solid #293252;
+    border-radius: 18px;
+    padding: 25px;
+}
+
+.card h3 {
+    color: #9da6c2;
+    font-size: 14px;
+    margin-top: 0;
+}
+
+.number {
+    font-size: 34px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.links {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.action {
+    padding: 25px;
+    border-radius: 18px;
+    background: #151b32;
+    border: 1px solid #293252;
+    text-decoration: none;
+    color: white;
+}
+
+.action:hover {
+    border-color: #635bff;
+    transform: translateY(-3px);
+}
+
+.action h2 {
+    margin-top: 0;
+}
+
+.action p {
+    color: #9da6c2;
+}
+
+@media (max-width: 900px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .links {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard {
+        padding: 20px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<div class="dashboard">
+
+    <section class="hero">
+        <span class="badge">AI BUSINESS OPERATIONS PLATFORM</span>
+
+        <h1>Welcome to SKYLINE 🚀</h1>
+
+        <p>
+            Manage projects, tasks, analytics and AI-powered customer support
+            from one intelligent platform.
+        </p>
+    </section>
+
+    <section class="stats">
+
+        <div class="card">
+            <h3>TOTAL PROJECTS</h3>
+            <div class="number">{{ total_projects }}</div>
+        </div>
+
+        <div class="card">
+            <h3>ACTIVE PROJECTS</h3>
+            <div class="number">{{ active_projects }}</div>
+        </div>
+
+        <div class="card">
+            <h3>TOTAL TASKS</h3>
+            <div class="number">{{ total_tasks }}</div>
+        </div>
+
+        <div class="card">
+            <h3>OPEN TICKETS</h3>
+            <div class="number">{{ open_tickets }}</div>
+        </div>
+
+    </section>
+
+    <section class="links">
+
+        <a class="action" href="/projects/">
+            <h2>📁 Projects</h2>
+            <p>Create and manage business projects.</p>
+        </a>
+
+        <a class="action" href="/tasks/">
+            <h2>✅ Tasks</h2>
+            <p>Assign and track team tasks.</p>
+        </a>
+
+        <a class="action" href="/analytics/">
+            <h2>📊 Analytics</h2>
+            <p>Monitor business performance.</p>
+        </a>
+
+        <a class="action" href="/api/support/">
+            <h2>🤖 AI Support</h2>
+            <p>Automatically classify customer problems.</p>
+        </a>
+
+        <a class="action" href="/notifications/">
+            <h2>🔔 Notifications</h2>
+            <p>View important SKYLINE alerts.</p>
+        </a>
+
+        <a class="action" href="/admin-control/">
+            <h2>⚙️ Admin Control</h2>
+            <p>Manage the complete platform.</p>
+        </a>
+
+    </section>
+
+</div>
+
+{% endblock %}

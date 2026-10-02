@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SKYLINE AI Support</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: white;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .back {
+            color: #aaa;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        .back:hover {
+            color: white;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #aeb6d0;
+        }
+
+        .card {
+            background: #151b32;
+            border: 1px solid #293252;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid #343d60;
+            background: #0d1327;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #635bff;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #635bff;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5148e8;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .result {
+            border-left: 4px solid #635bff;
+        }
+
+        .result h2 {
+            margin-top: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #635bff;
+            margin: 5px 5px 10px 0;
+            font-size: 13px;
+        }
+
+        .success {
+            background: #123d2a;
+            border: 1px solid #23734b;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            background: #401b24;
+            border: 1px solid #8f3548;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .small {
+            color: #9da6c2;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                margin: 20px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a class="back" href="/">
+        ← Back to Dashboard
+    </a>
+
+    <div class="header">
+
+        <h1>🤖 SKYLINE AI Support</h1>
+
+        <p>
+            Describe your problem and SKYLINE AI will automatically
+            classify the ticket, determine priority and generate a summary.
+        </p>
+
+    </div>
+
+    <div id="message"></div>
+
+    <div class="card">
+
+        <form id="ticketForm">
+
+            <label>Problem Title</label>
+
+            <input
+                type="text"
+                id="title"
+                placeholder="Example: Payment failed"
+                required
+            >
+
+            <label>Problem Description</label>
+
+            <textarea
+                id="description"
+                placeholder="Explain your problem..."
+                required
+            ></textarea>
+
+            <button id="submitButton" type="submit">
+                🤖 Analyze & Create Ticket
+            </button>
+
+        </form>
+
+        <p class="small">
+            Your JWT login token will be used to securely create the ticket.
+        </p>
+
+    </div>
+
+    <div id="resultCard" class="card result" style="display:none;">
+
+        <h2>AI Analysis</h2>
+
+        <div>
+            <span class="badge" id="category"></span>
+            <span class="badge" id="priority"></span>
+        </div>
+
+        <h3>AI Summary</h3>
+
+        <p id="summary"></p>
+
+        <h3>Recommendation</h3>
+
+        <p id="recommendation"></p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const form = document.getElementById("ticketForm");
+
+const button = document.getElementById("submitButton");
+
+const message = document.getElementById("message");
+
+const resultCard = document.getElementById("resultCard");
+
+
+form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    message.innerHTML = "";
+
+    resultCard.style.display = "none";
+
+    const accessToken = localStorage.getItem("access");
+
+    if (!accessToken) {
+
+        message.innerHTML = `
+            <div class="error">
+                Please login to SKYLINE first.
+                <br><br>
+                <a href="/api/auth/login/" style="color:white;">
+                    Go to Login
+                </a>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const title =
+        document.getElementById("title").value.trim();
+
+    const description =
+        document.getElementById("description").value.trim();
+
+
+    button.disabled = true;
+
+    button.innerText = "🤖 AI Processing...";
+
+
+    try {
+
+        const response = await fetch(
+            "/api/support/tickets/",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken
+                },
+
+                body: JSON.stringify({
+                    title: title,
+                    description: description
+                })
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Unable to create ticket."
+            );
+
+        }
+
+
+        message.innerHTML = `
+            <div class="success">
+                ✅ Ticket created successfully!
+            </div>
+        `;
+
+
+        document.getElementById("category").innerText =
+            "Category: " + data.category;
+
+
+        document.getElementById("priority").innerText =
+            "Priority: " + data.priority;
+
+
+        document.getElementById("summary").innerText =
+            data.ai_summary || "No summary available.";
+
+
+        resultCard.style.display = "block";
+
+
+        form.reset();
+
+    }
+
+    catch (error) {
+
+        message.innerHTML = `
+            <div class="error">
+                ❌ ${error.message}
+            </div>
+        `;
+
+    }
+
+    finally {
+
+        button.disabled = false;
+
+        button.innerText =
+            "🤖 Analyze & Create Ticket";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

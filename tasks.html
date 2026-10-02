@@ -1,0 +1,265 @@
+```html id="k9f4pm"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SKYLINE - Tasks</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: white;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .form, .task {
+            background: #151c32;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 15px;
+            border: 1px solid #303952;
+            border-radius: 8px;
+            background: #0f1528;
+            color: white;
+        }
+
+        textarea {
+            min-height: 90px;
+        }
+
+        button {
+            background: #635bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .status {
+            color: #8b9cff;
+        }
+
+        .priority {
+            color: #ffb86b;
+        }
+
+        #message {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>✅ SKYLINE Tasks</h1>
+
+    <p>Manage and track project tasks.</p>
+
+    <div class="form">
+
+        <h2>Create Task</h2>
+
+        <input id="title" placeholder="Task title">
+
+        <textarea
+            id="description"
+            placeholder="Task description">
+        </textarea>
+
+        <input
+            id="project"
+            type="number"
+            placeholder="Project ID">
+
+        <select id="status">
+            <option value="TODO">To Do</option>
+            <option value="PROGRESS">In Progress</option>
+            <option value="DONE">Done</option>
+        </select>
+
+        <select id="priority">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+        </select>
+
+        <button onclick="createTask()">
+            Create Task
+        </button>
+
+        <div id="message"></div>
+
+    </div>
+
+    <h2>Tasks</h2>
+
+    <div id="tasks">
+        Loading tasks...
+    </div>
+
+</div>
+
+<script>
+
+async function loadTasks() {
+
+    const token = localStorage.getItem("access");
+
+    if (!token) {
+        document.getElementById("tasks").innerHTML =
+            "<p>Please login first.</p>";
+        return;
+    }
+
+    const response = await fetch("/api/tasks/", {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
+
+    if (!response.ok) {
+        document.getElementById("tasks").innerHTML =
+            "<p>Unable to load tasks.</p>";
+        return;
+    }
+
+    const data = await response.json();
+
+    const box = document.getElementById("tasks");
+
+    if (data.length === 0) {
+        box.innerHTML = "<p>No tasks yet.</p>";
+        return;
+    }
+
+    box.innerHTML = "";
+
+    data.forEach(task => {
+
+        box.innerHTML += `
+            <div class="task">
+
+                <h3>${task.title}</h3>
+
+                <p>${task.description || ""}</p>
+
+                <p>
+                    Status:
+                    <span class="status">
+                        ${task.status}
+                    </span>
+                </p>
+
+                <p>
+                    Priority:
+                    <span class="priority">
+                        ${task.priority}
+                    </span>
+                </p>
+
+                <p>
+                    Project ID: ${task.project}
+                </p>
+
+            </div>
+        `;
+    });
+}
+
+
+async function createTask() {
+
+    const token = localStorage.getItem("access");
+
+    if (!token) {
+        document.getElementById("message").innerText =
+            "Please login first.";
+        return;
+    }
+
+    const title =
+        document.getElementById("title").value;
+
+    const description =
+        document.getElementById("description").value;
+
+    const project =
+        document.getElementById("project").value;
+
+    const status =
+        document.getElementById("status").value;
+
+    const priority =
+        document.getElementById("priority").value;
+
+    if (!title || !project) {
+        document.getElementById("message").innerText =
+            "Enter task title and Project ID.";
+        return;
+    }
+
+    const response = await fetch("/api/tasks/", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+
+        body: JSON.stringify({
+            title: title,
+            description: description,
+            project: project,
+            status: status,
+            priority: priority
+        })
+    });
+
+    if (response.ok) {
+
+        document.getElementById("message").innerText =
+            "✅ Task created successfully.";
+
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+
+        loadTasks();
+
+    } else {
+
+        const error = await response.json();
+
+        document.getElementById("message").innerText =
+            "❌ " + JSON.stringify(error);
+    }
+}
+
+loadTasks();
+
+</script>
+
+</body>
+</html>
+```
+

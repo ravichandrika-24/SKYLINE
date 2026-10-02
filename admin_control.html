@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYLINE Admin Control Center</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #080d1c;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            gap: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #9da6c2;
+            margin-top: 8px;
+        }
+
+        .back {
+            color: white;
+            text-decoration: none;
+            background: #635bff;
+            padding: 12px 18px;
+            border-radius: 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            background: #141a30;
+            border: 1px solid #293252;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .stat h3 {
+            color: #9da6c2;
+            font-size: 14px;
+            margin: 0 0 12px;
+        }
+
+        .number {
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #141a30;
+            border: 1px solid #293252;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .item {
+            display: block;
+            text-decoration: none;
+            color: white;
+            background: #0d1327;
+            border: 1px solid #293252;
+            padding: 17px;
+            border-radius: 10px;
+            margin-top: 12px;
+        }
+
+        .item:hover {
+            border-color: #635bff;
+            transform: translateY(-2px);
+        }
+
+        .item span {
+            display: block;
+            color: #9da6c2;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        @media(max-width: 800px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 500px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .container {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top">
+        <div>
+            <h1>⚡ SKYLINE Admin Control Center</h1>
+            <div class="subtitle">
+                Central management dashboard for your business platform
+            </div>
+        </div>
+
+        <a class="back" href="/">Dashboard</a>
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <h3>PROJECTS</h3>
+            <div class="number">{{ total_projects }}</div>
+        </div>
+
+        <div class="stat">
+            <h3>TASKS</h3>
+            <div class="number">{{ total_tasks }}</div>
+        </div>
+
+        <div class="stat">
+            <h3>OPEN TICKETS</h3>
+            <div class="number">{{ open_tickets }}</div>
+        </div>
+
+        <div class="stat">
+            <h3>URGENT TICKETS</h3>
+            <div class="number">{{ urgent_tickets }}</div>
+        </div>
+
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <h2>📊 Management</h2>
+
+            <a class="item" href="/admin/">
+                Django Admin
+                <span>Manage users, projects, tasks and tickets</span>
+            </a>
+
+            <a class="item" href="/analytics/">
+                Analytics
+                <span>Business performance and project statistics</span>
+            </a>
+
+            <a class="item" href="/api/support/management/">
+                Ticket Management
+                <span>Search and manage customer support tickets</span>
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>🚀 SKYLINE Modules</h2>
+
+            <a class="item" href="/projects/">
+                Projects
+                <span>Create and manage business projects</span>
+            </a>
+
+            <a class="item" href="/tasks/">
+                Tasks
+                <span>Track employee work and priorities</span>
+            </a>
+
+            <a class="item" href="/api/support/">
+                AI Support
+                <span>AI-powered ticket classification</span>
+            </a>
+
+            <a class="item" href="/notifications/">
+                Notifications
+                <span>System activity notifications</span>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
