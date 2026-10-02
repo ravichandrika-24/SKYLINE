@@ -20,7 +20,10 @@ from rest_framework_simplejwt.views import (
 )
 
 
+from .dbcheck import dbcheck
+
 urlpatterns = [
+    path('dbcheck/', dbcheck),
     path('diagnose/', diagnose),
 
     path(
