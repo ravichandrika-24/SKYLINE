@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from config.health import health_check
+from projects.views import analytics_page
 
 urlpatterns = [
     path('analytics/', analytics_page, name='analytics-page'),
