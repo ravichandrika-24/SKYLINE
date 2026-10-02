@@ -10,6 +10,7 @@ from .views import (
 )
 
 from .health import health_check
+from .diagnose import diagnose
 
 from accounts.views import role_dashboard
 
@@ -20,6 +21,7 @@ from rest_framework_simplejwt.views import (
 
 
 urlpatterns = [
+    path('diagnose/', diagnose),
 
     path(
         "",
