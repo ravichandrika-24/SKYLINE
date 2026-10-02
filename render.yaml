@@ -1,9 +1,11 @@
-services:
+﻿services:
   - type: web
     name: skyline
     runtime: python
-    buildCommand: pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
-    startCommand: python manage.py migrate --noinput && gunicorn config.wsgi:application
+
+    buildCommand: pip install -r requirements.txt && python manage.py migrate --noinput && python manage.py collectstatic --noinput
+    startCommand: gunicorn --bind 0.0.0.0:$PORT config.wsgi:application
+
     envVars:
       - key: SECRET_KEY
         generateValue: true
@@ -12,7 +14,4 @@ services:
         value: "False"
 
       - key: ALLOWED_HOSTS
-        value: "False"
-# deploy-trigger
-# deploy-check
-# deploy 230033
+        value: "skyline-tra1.onrender.com,skyline-2.onrender.com"
