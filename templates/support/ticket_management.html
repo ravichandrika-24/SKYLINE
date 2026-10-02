@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>SKYLINE - Ticket Management</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: #151c32;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #252e49;
+        }
+
+        input,
+        select {
+            padding: 12px;
+            background: #0f1528;
+            color: white;
+            border: 1px solid #303952;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #635bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .ticket {
+            background: #0f1528;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .priority {
+            color: #ffb86b;
+            font-weight: bold;
+        }
+
+        .status {
+            color: #8b9cff;
+            font-weight: bold;
+        }
+
+        .category {
+            color: #8be9fd;
+        }
+
+        .empty {
+            color: #9ca3af;
+        }
+
+        @media(max-width:700px) {
+
+            input,
+            select,
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎫 SKYLINE Ticket Management</h1>
+
+    <p>
+        Search and monitor customer support tickets.
+    </p>
+
+
+    <div class="card">
+
+        <form method="GET">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search ticket..."
+                value="{{ search }}"
+            >
+
+            <select name="priority">
+
+                <option value="">All Priorities</option>
+
+                <option value="LOW"
+                    {% if priority == "LOW" %}selected{% endif %}>
+                    Low
+                </option>
+
+                <option value="MEDIUM"
+                    {% if priority == "MEDIUM" %}selected{% endif %}>
+                    Medium
+                </option>
+
+                <option value="HIGH"
+                    {% if priority == "HIGH" %}selected{% endif %}>
+                    High
+                </option>
+
+                <option value="URGENT"
+                    {% if priority == "URGENT" %}selected{% endif %}>
+                    Urgent
+                </option>
+
+            </select>
+
+
+            <select name="status">
+
+                <option value="">All Status</option>
+
+                <option value="OPEN"
+                    {% if status == "OPEN" %}selected{% endif %}>
+                    Open
+                </option>
+
+                <option value="IN_PROGRESS"
+                    {% if status == "IN_PROGRESS" %}selected{% endif %}>
+                    In Progress
+                </option>
+
+                <option value="RESOLVED"
+                    {% if status == "RESOLVED" %}selected{% endif %}>
+                    Resolved
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Tickets</h2>
+
+        {% if tickets %}
+
+            {% for ticket in tickets %}
+
+                <div class="ticket">
+
+                    <h3>
+                        {{ ticket.title }}
+                    </h3>
+
+                    <p>
+                        {{ ticket.description }}
+                    </p>
+
+                    <p>
+                        Category:
+                        <span class="category">
+                            {{ ticket.category }}
+                        </span>
+                    </p>
+
+                    <p>
+                        Priority:
+                        <span class="priority">
+                            {{ ticket.priority }}
+                        </span>
+                    </p>
+
+                    <p>
+                        Status:
+                        <span class="status">
+                            {{ ticket.status }}
+                        </span>
+                    </p>
+
+                    {% if ticket.ai_summary %}
+
+                    <p>
+                        AI Summary:
+                        {{ ticket.ai_summary }}
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+                No tickets found.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
